@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import {
-  useFeedbackStore,
-  type TechnicalFeedback,
-  type ClinicWorkEnvironment,
-  type GrowthFeedback,
-} from "@/app/Store/useFeedbackStore";
+
 import Papa from "papaparse";
+import {
+  ClinicWorkEnvironment,
+  GrowthFeedback,
+  TechnicalFeedback,
+  useFeedbackStore,
+} from "@/app/Store/useFeedbackStore";
 
 export default function UploadFeedbackData() {
   const {

@@ -16,7 +16,6 @@
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "firebase": "^12.5.0",
     "lucide-react": "^0.552.0",
     "next": "16.0.1",
     "papaparse": "^5.5.3",

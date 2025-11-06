@@ -1,12 +1,12 @@
 "use client";
 
-import {
-  useFeedbackStore,
-  type TechnicalFeedback,
-} from "@/app/Store/useFeedbackStore";
 import { useEffect } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
+import {
+  TechnicalFeedback,
+  useFeedbackStore,
+} from "@/app/Store/useFeedbackStore";
 
 export default function TechnicalFeedbackTable() {
   const { technicalFeedback, fetchAllFeedback } = useFeedbackStore();
