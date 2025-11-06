@@ -3,10 +3,8 @@
 import { useEffect } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
-import {
-  ClinicWorkEnvironment,
-  useFeedbackStore,
-} from "@/app/Store/useFeedbackStore";
+import type { ClinicWorkEnvironment } from "@/app/Store/useFeedbackStore";
+import { useFeedbackStore } from "@/app/Store/useFeedbackStore";
 
 export default function ClinicWorkEnvironmentTable() {
   const { clinicWorkEnvironment, fetchAllFeedback } = useFeedbackStore();

@@ -7,12 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
 import Papa from "papaparse";
-import {
+import type {
   ClinicWorkEnvironment,
   GrowthFeedback,
   TechnicalFeedback,
-  useFeedbackStore,
 } from "@/app/Store/useFeedbackStore";
+import { useFeedbackStore } from "@/app/Store/useFeedbackStore";
 
 export default function UploadFeedbackData() {
   const {
