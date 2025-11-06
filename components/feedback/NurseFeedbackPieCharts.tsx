@@ -146,22 +146,20 @@ function PieCard({
               innerRadius={60}
               strokeWidth={5}
               onMouseEnter={(_, index) => setActiveIndex(index ?? 0)}
-              {...({
-                activeIndex,
-                activeShape: ({
-                  outerRadius = 0,
-                  ...props
-                }: PieSectorDataItem) => (
-                  <g>
-                    <Sector {...props} outerRadius={outerRadius + 10} />
-                    <Sector
-                      {...props}
-                      outerRadius={outerRadius + 25}
-                      innerRadius={outerRadius + 12}
-                    />
-                  </g>
-                ),
-              } as any)}
+              activeShape={({
+                outerRadius = 0,
+                ...props
+              }: PieSectorDataItem) => (
+                <g>
+                  <Sector {...props} outerRadius={outerRadius + 10} />
+                  <Sector
+                    {...props}
+                    outerRadius={outerRadius + 25}
+                    innerRadius={outerRadius + 12}
+                  />
+                </g>
+              )}
+              {...({ activeIndex } as React.ComponentProps<typeof Pie>)}
             >
               <Label
                 content={({ viewBox }) => {
@@ -219,8 +217,14 @@ export default function NurseFeedbackPieCharts() {
       console.log("[v0] No data in store, initializing from CSV");
       initializeFromCSV();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setIsLoaded(true);
-  }, []);
+  }, [
+    clinicWorkEnvironment.length,
+    growthFeedback.length,
+    initializeFromCSV,
+    technicalFeedback.length,
+  ]);
 
   const charts = useMemo(() => {
     const yesNoCategories = ["Yes", "No"];
