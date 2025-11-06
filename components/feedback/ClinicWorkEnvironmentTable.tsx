@@ -1,12 +1,12 @@
 "use client";
 
-import {
-  useFeedbackStore,
-  type ClinicWorkEnvironment,
-} from "@/app/Store/useFeedbackStore";
 import { useEffect } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
+import {
+  ClinicWorkEnvironment,
+  useFeedbackStore,
+} from "@/app/Store/useFeedbackStore";
 
 export default function ClinicWorkEnvironmentTable() {
   const { clinicWorkEnvironment, fetchAllFeedback } = useFeedbackStore();
