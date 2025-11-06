@@ -16,7 +16,7 @@ export default function Page() {
   }, [initializeFromCSV]);
 
   return (
-    <main className="container mx-auto py-10">
+    <main className="container mx-auto py-10 px-7">
       <div className="space-y-8">
         <div>
           <h1 className="text-4xl font-bold mb-2">Nurse Feedback Dashboard</h1>
