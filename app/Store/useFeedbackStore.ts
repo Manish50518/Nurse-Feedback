@@ -3,11 +3,6 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import Papa from "papaparse";
 import { FEEDBACK_CSV_DATA } from "@/lib/feedback-data";
-import type {
-  TechnicalFeedback,
-  ClinicWorkEnvironment,
-  GrowthFeedback,
-} from "@/app/Store/useFeedbackStore";
 
 interface FeedbackStore {
   selectedFiles: File[];
@@ -234,7 +229,7 @@ function mapRowData(row: Record<string, string>) {
   };
 }
 
-interface TechnicalFeedback {
+export interface TechnicalFeedback {
   id?: string;
   name: string;
   tabletWorking: string;
@@ -244,7 +239,7 @@ interface TechnicalFeedback {
   doctorsRespectful: string;
 }
 
-interface ClinicWorkEnvironment {
+export interface ClinicWorkEnvironment {
   id?: string;
   name: string;
   partnerStaffIssues: string;
@@ -260,7 +255,7 @@ interface ClinicWorkEnvironment {
   equipmentWorking: string;
 }
 
-interface GrowthFeedback {
+export interface GrowthFeedback {
   id?: string;
   name: string;
   requireTraining: string;
