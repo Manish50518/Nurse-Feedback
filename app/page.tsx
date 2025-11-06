@@ -22,7 +22,7 @@ export default function Page() {
         <div>
           <h1 className="text-4xl font-bold mb-2">Nurse Feedback Dashboard</h1>
           <p className="text-muted-foreground">
-            View and analyze nurse feedback data across three categories
+            View and analyze nurse feedback data across three categ6ories
           </p>
         </div>
 
