@@ -145,20 +145,23 @@ function PieCard({
               nameKey="name"
               innerRadius={60}
               strokeWidth={5}
-              activeIndex={activeIndex}
-              activeShape={({
-                outerRadius = 0,
-                ...props
-              }: PieSectorDataItem) => (
-                <g>
-                  <Sector {...props} outerRadius={outerRadius + 10} />
-                  <Sector
-                    {...props}
-                    outerRadius={outerRadius + 25}
-                    innerRadius={outerRadius + 12}
-                  />
-                </g>
-              )}
+              onMouseEnter={(_, index) => setActiveIndex(index ?? 0)}
+              {...({
+                activeIndex,
+                activeShape: ({
+                  outerRadius = 0,
+                  ...props
+                }: PieSectorDataItem) => (
+                  <g>
+                    <Sector {...props} outerRadius={outerRadius + 10} />
+                    <Sector
+                      {...props}
+                      outerRadius={outerRadius + 25}
+                      innerRadius={outerRadius + 12}
+                    />
+                  </g>
+                ),
+              } as any)}
             >
               <Label
                 content={({ viewBox }) => {
