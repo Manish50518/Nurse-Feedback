@@ -1,45 +1,13 @@
 "use client";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-
-export interface TechnicalFeedback {
-  id?: string;
-  name: string;
-  tabletWorking: string;
-  internetProblems: string;
-  knowHowToUseTablet: string;
-  getHelpQuickly: string;
-  doctorsRespectful: string;
-}
-
-export interface ClinicWorkEnvironment {
-  id?: string;
-  name: string;
-  partnerStaffIssues: string;
-  comfortableTimings: string;
-  clinicClean: string;
-  feelSafe: string;
-  medicinesAvailable: string;
-  managersHelpful: string;
-  monthlyTargetCompleted: string;
-  patientsBehaveWell: string;
-  patientsTrustYou: string;
-  helpDuringCamps: string;
-  equipmentWorking: string;
-}
-
-export interface GrowthFeedback {
-  id?: string;
-  name: string;
-  requireTraining: string;
-  proudOfWork: string;
-  careerGrowth: string;
-  friendRecommendation: string;
-  clinicDistance: string;
-  additionalHelpNeeded: string;
-  clinicImprovementSuggestions: string;
-  feedbackForManagement: string;
-}
+import Papa from "papaparse";
+import { FEEDBACK_CSV_DATA } from "@/lib/feedback-data";
+import type {
+  TechnicalFeedback,
+  ClinicWorkEnvironment,
+  GrowthFeedback,
+} from "@/app/Store/useFeedbackStore";
 
 interface FeedbackStore {
   selectedFiles: File[];
@@ -60,6 +28,7 @@ interface FeedbackStore {
     totalGrowthRecords: number;
     totalRecords: number;
   };
+  initializeFromCSV: () => void;
 }
 
 export const useFeedbackStore = create<FeedbackStore>()(
@@ -79,6 +48,63 @@ export const useFeedbackStore = create<FeedbackStore>()(
       })),
     setProcessedFiles: (files) => set({ processedFiles: files }),
     clearSelectedFiles: () => set({ selectedFiles: [] }),
+
+    initializeFromCSV: () => {
+      try {
+        console.log("[v0] Initializing data from embedded CSV");
+        const result = Papa.parse(FEEDBACK_CSV_DATA, {
+          header: true,
+          skipEmptyLines: true,
+        });
+        const data = result.data as Record<string, string>[];
+
+        console.log("[v0] Parsed embedded CSV with", data.length, "rows");
+
+        const technicalRecords: TechnicalFeedback[] = [];
+        const clinicRecords: ClinicWorkEnvironment[] = [];
+        const growthRecords: GrowthFeedback[] = [];
+
+        data.forEach((row) => {
+          if (
+            row["Name and Employee ID"] &&
+            row["Name and Employee ID"].trim()
+          ) {
+            const mapped = mapRowData(row);
+            technicalRecords.push(mapped.technical);
+            clinicRecords.push(mapped.clinic);
+            growthRecords.push(mapped.growth);
+          }
+        });
+
+        // Save to localStorage
+        localStorage.setItem(
+          "technical_feedback",
+          JSON.stringify(technicalRecords)
+        );
+        localStorage.setItem(
+          "clinic_work_environment",
+          JSON.stringify(clinicRecords)
+        );
+        localStorage.setItem("growth_feedback", JSON.stringify(growthRecords));
+
+        console.log(
+          "[v0] Initialized - Technical:",
+          technicalRecords.length,
+          "Clinic:",
+          clinicRecords.length,
+          "Growth:",
+          growthRecords.length
+        );
+
+        set({
+          technicalFeedback: technicalRecords,
+          clinicWorkEnvironment: clinicRecords,
+          growthFeedback: growthRecords,
+        });
+      } catch (error) {
+        console.error("Error initializing from CSV:", error);
+      }
+    },
 
     fetchAllFeedback: () => {
       try {
@@ -143,3 +169,106 @@ export const useFeedbackStore = create<FeedbackStore>()(
     },
   }))
 );
+
+function mapRowData(row: Record<string, string>) {
+  return {
+    technical: {
+      id: Math.random().toString(36).substr(2, 9),
+      name: row["Name and Employee ID"] || "",
+      tabletWorking: row["Is the tablet working well for consultations?"] || "",
+      internetProblems:
+        row["Do you face internet problems during consultations?"] || "",
+      knowHowToUseTablet: row["Do you know how to use the tablet?"] || "",
+      getHelpQuickly:
+        row["If tablet or internet has a problem, do you get help quickly?"] ||
+        "",
+      doctorsRespectful:
+        row["Are the doctors nice and respectful during consultations?"] || "",
+    },
+    clinic: {
+      id: Math.random().toString(36).substr(2, 9),
+      name: row["Name and Employee ID"] || "",
+      partnerStaffIssues:
+        row[
+          "Do you face any problems working with the partner staff in the clinic?  "
+        ] || "",
+      comfortableTimings:
+        row["Are you comfortable with the current clinic timings? "] || "",
+      clinicClean: row["Is your clinic clean and in a good condition?"] || "",
+      feelSafe: row["Do you feel safe working alone in the clinic?"] || "",
+      medicinesAvailable:
+        row["Do you get all the medicines you need at the clinic?"] || "",
+      managersHelpful: row["Are your DCs and field managers helpful?"] || "",
+      monthlyTargetCompleted:
+        row["Are you able to complete your monthly target?"] || "",
+      patientsBehaveWell: row["Do patients behave well with you?"] || "",
+      patientsTrustYou: row["Do patients trust you at the clinic?"] || "",
+      helpDuringCamps:
+        row["Do you get help during health diagnostic camps?"] || "",
+      equipmentWorking:
+        row[
+          "Are all the essential equipment in the clinic working properly?"
+        ] || "",
+    },
+    growth: {
+      id: Math.random().toString(36).substr(2, 9),
+      name: row["Name and Employee ID"] || "",
+      requireTraining: row["Do you require any additional training?"] || "",
+      proudOfWork: row["Do you feel proud of your work?"] || "",
+      careerGrowth:
+        row[
+          "Do you feel you can grow in your career while working at M-Swasth? "
+        ] || "",
+      friendRecommendation:
+        row["Would you tell a friend to work here? (Rate from 1 to 10)"] || "",
+      clinicDistance:
+        row[
+          "How far is the clinic from your residence? (in meters/ kilometers)"
+        ] || "",
+      additionalHelpNeeded:
+        row["Any additional help you require to work better?"] || "",
+      clinicImprovementSuggestions:
+        row["Things that can make your clinic better"] || "",
+      feedbackForManagement: row["Any feedback for the management"] || "",
+    },
+  };
+}
+
+interface TechnicalFeedback {
+  id?: string;
+  name: string;
+  tabletWorking: string;
+  internetProblems: string;
+  knowHowToUseTablet: string;
+  getHelpQuickly: string;
+  doctorsRespectful: string;
+}
+
+interface ClinicWorkEnvironment {
+  id?: string;
+  name: string;
+  partnerStaffIssues: string;
+  comfortableTimings: string;
+  clinicClean: string;
+  feelSafe: string;
+  medicinesAvailable: string;
+  managersHelpful: string;
+  monthlyTargetCompleted: string;
+  patientsBehaveWell: string;
+  patientsTrustYou: string;
+  helpDuringCamps: string;
+  equipmentWorking: string;
+}
+
+interface GrowthFeedback {
+  id?: string;
+  name: string;
+  requireTraining: string;
+  proudOfWork: string;
+  careerGrowth: string;
+  friendRecommendation: string;
+  clinicDistance: string;
+  additionalHelpNeeded: string;
+  clinicImprovementSuggestions: string;
+  feedbackForManagement: string;
+}

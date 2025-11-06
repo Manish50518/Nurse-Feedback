@@ -265,7 +265,7 @@ export function DataTable<TData extends object>({
 
   return (
     <div>
-      <h2 className="mb-10 text-primary">{title}</h2>
+      <h2 className="mb-10 text-primary text-3xl font-extrabold">{title}</h2>
       <div className="items-center md:flex-row flex-col pb-4 flex justify-between gap-3">
         {data.length > 0 && (
           <div className="flex items-center gap-2">
